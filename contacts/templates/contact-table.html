@@ -1,0 +1,24 @@
+{% if contacts %}
+<table>
+    <th>#</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Company</th>
+    <th>City</th>
+    <th>Country</th>
+    <th>Job History</th>
+    {% for contact in contacts %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ contact.name|default:'-' }}</td>
+            <td>{{ contact.email|default:'-' }}</td>
+            <td>{{ contact.company|default:'-' }}</td>
+            <td>{{ contact.city|default:'-' }}</td>
+            <td>{{ contact.country|default:'-' }}</td>
+            <td>{{ contact.job_history|join:', '|default:'-' }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <h2>No matching contacts found.</h2>
+{% endif %}
