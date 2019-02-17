@@ -7,7 +7,7 @@ from contacts.data.contact_store import ContactStore
 
 class ContactSearchView(TemplateView):
     template_name = 'contact-search.html'
+    contact_store = ContactStore()
 
     def get(self, *args, **kwargs):
-        contacts = ContactStore.load_contacts_from_file()
-        return self.render_to_response({'contacts': contacts})
+        return self.render_to_response({})
