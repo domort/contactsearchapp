@@ -41,3 +41,21 @@ class ContactStore(object):
                 self.contact_tree = self.build_search_tree(contacts)
         except:
             pass
+
+    def search_for_contacts(self, term):
+        matches = []
+        if term:
+            try:
+                term = unicode(term).lower()
+            except:
+                raise ValueError(u'Search term must be a valid string')
+
+            for k, v in self.contact_tree.iteritems():
+                if term in k:
+                    matches.append(v)
+
+        return matches or self.all_contacts
+
+    @property
+    def all_contacts(self):
+        return self.contact_tree.values()

@@ -20,8 +20,9 @@ class ContactSearchView(TemplateView):
             term = request.POST.get('term', None)
             if term:
                 try:
-                    term = unicode(term)
+                    term = unicode(term).lower()
                 except (TypeError, ValueError):
                     term = None
 
-                return JsonResponse({})
+                matches = self.contact_store.search_for_contacts(term)
+                return JsonResponse({'contacts': matches})
