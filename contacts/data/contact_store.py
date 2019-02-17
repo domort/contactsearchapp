@@ -1,5 +1,7 @@
 import json
 
+from collections import OrderedDict
+
 
 class ContactStore(object):
     contact_tree = {}
@@ -27,8 +29,8 @@ class ContactStore(object):
 
     @classmethod
     def build_search_tree(cls, contacts):
-        tree = {}
-        for contact in contacts:
+        tree = OrderedDict({})
+        for contact in sorted(contacts, key=lambda c: c.get('name', '')):
             contact_terms = cls.extract_terms(contact)
             terms_str = u' '.join(contact_terms)
             tree[terms_str] = contact

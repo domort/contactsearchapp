@@ -2,9 +2,28 @@
 <head>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-     <script>
+    <style>
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eee;
+        }
+    </style>
+    <script>
         function search_contacts(term) {
-             $.ajax({
+            $.ajax({
                 type: 'POST',
                 url: '{% url 'contact-search' %}',
                 dataType: 'json',
