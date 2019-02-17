@@ -4,6 +4,9 @@ from collections import OrderedDict
 
 
 class ContactStore(object):
+    """
+        Builds and holds contact tree in a search friendly format
+    """
     contact_tree = {}
 
     def __init__(self):
@@ -11,6 +14,11 @@ class ContactStore(object):
 
     @classmethod
     def extract_terms(cls, item):
+        """
+        Extracts searchable terms from a given object
+        :param item: anything
+        :return: generator object of searchable terms
+        """
         if isinstance(item, dict):
             for k, v in item.iteritems():
                 for t in cls.extract_terms(v):
@@ -29,6 +37,11 @@ class ContactStore(object):
 
     @classmethod
     def build_search_tree(cls, contacts):
+        """
+        Builds contact tree used by the search function by mapping extracted terms to contact dicts
+        :param contacts: list of contacts
+        :return: dictionary in the following format: {representative_string: contact_dict}
+        """
         tree = OrderedDict({})
         for contact in sorted(contacts, key=lambda c: c.get('name', '')):
             contact_terms = cls.extract_terms(contact)
@@ -37,6 +50,10 @@ class ContactStore(object):
         return tree
 
     def load_contacts_from_file(self):
+        """
+        Loads contacts from a json file and uses them to build a search tree
+        :return: None
+        """
         try:
             with open(u'contacts/data/contacts.json') as f:
                 contacts = json.load(f)
@@ -45,6 +62,12 @@ class ContactStore(object):
             pass
 
     def search_for_contacts(self, term):
+        """
+        Searches through contact list and returns contacts matching to the given term.
+        Returns all contacts if there are no matches.
+        :param term: a string to filter contacts by
+        :return: list of matching contacts
+        """
         matches = []
         if term:
             try:
@@ -60,4 +83,7 @@ class ContactStore(object):
 
     @property
     def all_contacts(self):
+        """
+        Shortcut to get all contacts
+        """
         return self.contact_tree.values()
