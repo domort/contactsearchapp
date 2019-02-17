@@ -1,12 +1,37 @@
 <html>
 <head>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+     <script>
+        function search_contacts(term) {
+             $.ajax({
+                type: 'POST',
+                url: '{% url 'contact-search' %}',
+                dataType: 'json',
+                data: {
+                    term: term,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (response, status, error) {
+                    console.error(response);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#search-input').on('input', function () {
+                search_contacts(this.value);
+            });
+        });
+    </script>
 </head>
 
 <body>
     Search: <input id="search-input">
     <div id="contact-table-container">
-        {{ contacts }}
     </div>
 </body>
 </html>
