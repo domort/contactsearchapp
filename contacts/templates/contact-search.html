@@ -20,6 +20,11 @@
         th {
             background-color: #eee;
         }
+
+        .error-msg {
+            color: red;
+            display: none;
+        }
     </style>
     <script>
         function search_contacts(term) {
@@ -32,10 +37,14 @@
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
                 success: function (data) {
-                    console.log(data);
+                    $('#error-message').hide();
+                    let table = data['contact_table'];
+                    if(table) {
+                        $('#contact-table-container').html(table);
+                    }
                 },
                 error: function (response, status, error) {
-                    console.error(response);
+                    $('#error-message').show();
                 }
             });
         }
@@ -50,6 +59,7 @@
 
 <body>
     Search: <input id="search-input">
+    <span id="error-message" class="error-msg">Search is now unavailable. Please try again later.</span>
     <div id="contact-table-container">
         {{ contact_table }}
     </div>

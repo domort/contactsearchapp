@@ -25,6 +25,7 @@ class ContactSearchView(TemplateView):
             raise Http404()
         else:
             term = request.POST.get('term', None)
+            matches = None
             if term:
                 try:
                     term = unicode(term).lower()
@@ -32,4 +33,7 @@ class ContactSearchView(TemplateView):
                     term = None
 
                 matches = self.contact_store.search_for_contacts(term)
-                return JsonResponse({'contacts': matches})
+
+            if not matches:
+                matches = self.contact_store.all_contacts
+            return JsonResponse({'contact_table': self.render_table(matches)})
